@@ -1,13 +1,19 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const { Brand } = require('./sequelize')
+const cors = require('cors')
+
+
+const corsOptions = {
+  origin: 'http://localhost:4200'
+}
 
 const app = express()
 app.use(bodyParser.json())
-
+app.use(cors(corsOptions))
 // API ENDPOINTS
 
-const port = 3000
+const port = 3010
 app.listen(port, '127.0.0.1', () => {
   console.log(`Running on http://localhost:${port}`)
 })
@@ -62,6 +68,19 @@ app.put('/api/brands/:id?', async(req, res) => {
         res.json(e)
       })
       return res.json(brand)
+    })
+  }
+})
+
+app.delete('/api/brands/:id?', (req, res) => {
+  if (req.params.id){
+    Brand.destroy({
+      where: {id: req.params.id}
+    }).then(() => {
+      res.json(`Brand ${req.params.id} deleted`)
+    }).catch(err => {
+      res.status(404)
+      res.json(err)
     })
   }
 })
