@@ -1,0 +1,2 @@
+- Start the project: ```npm run dev```
+- Install all dependencies: ```npm install```
